@@ -23,29 +23,28 @@ Plug 'vim-syntastic/syntastic'
 Plug 'Raimondi/delimitMate'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'tpope/vim-surround'
+Plug 'neomake/neomake'
+Plug 'jiangmiao/auto-pairs'
+Plug 'w0rp/ale'
 
 " Functional.
+Plug 'roxma/nvim-completion-manager'
+Plug 'Shougo/denite.nvim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-sensible'
-Plug 'junegunn/seoul256.vim'
 Plug 'brooth/far.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'pangloss/vim-javascript'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'elzr/vim-json'
-Plug 'othree/html5.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'junegunn/vim-easy-align'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'thinca/vim-quickrun'
 Plug 'mbbill/undotree'
 Plug 'kien/ctrlp.vim'
-Plug 'sunaku/vim-shortcut'
 Plug 'honza/vim-snippets'
 Plug 'noahfrederick/vim-laravel'
 Plug 'noahfrederick/vim-composer'
+Plug 'jwalton512/vim-blade'
+Plug 'mileszs/ack.vim'
 
 
 " Auto-completion.
@@ -60,6 +59,8 @@ else
 endif
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
+let g:ackprg = 'ag --nogroup --nocolor --column'
+let g:deoplete#enable_at_startup = 1
 " Movement.
 
 
@@ -78,22 +79,13 @@ let g:lightline = {
   \ 'colorscheme': 'onedark',
   \ }
 let g:airline_theme='onedark'
-colorscheme space-vim-dark
+colorscheme onedark
 
 " NERDTree
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = '↠'
 let g:NERDTreeDirArrowCollapsible = '↡'
 nmap <C-b> :NERDTreeToggle<cr>
-
-" Deoplete.
-let g:deoplete#enable_at_startup = 1
-
-" Airline.
-let g:airline_powerline_fonts = 1
-let g:airline_section_z = ' %{strftime("%-I:%M %p")}'
-let g:airline_section_warning = ''
-"let g:airline#extensions#tabline#enabled = 1
 
 " CtrlP file search"
 let g:ctrlp_map = '<c-p>'
@@ -102,11 +94,17 @@ let g:ctrlp_cmd = 'CtrlP'
 set wildignore+=*/vendor/**
 set wildignore+=*/public/forum/**
 
+" editorconfig.
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+
+
 " Undotree.
 nmap <C-A-z> :UndotreeShow<cr>
-
+" Move to vimrc faster.
+map <leader> :ev $MYVIMRC <leader>
 
 " Movement.
+"
 " Mouse Support.
 set mouse=a
 
@@ -117,19 +115,30 @@ set shiftwidth=4
 " On pressing tab, insert 4 spaces
 set expandtab
 set number
-"easier window navigation
 
-nmap <C-h> <C-w>h
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap <C-l> <C-w>
+
+
+"easier window navigation
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+map <leader>= :vertical resize +5<CR>
+map <leader>- :vertical resize -5<CR>
+
+
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+autocmd vimenter * NERDTree
 
 " Keyboard shortcuts.
+" Copy, paste, cut
+map <A-c>"+y"<cr>
+" Save
+map <C-s> :w <cr>
+"Make it easy to edit VIMRC file"
+nmap <Leader>ev :tabedit $MYVIMRC<cr>
 
-" Resetting keyboard shortcuts for cut/copy/paste to ctrl x/c/v  -  use q for
-" visual mode instead of v
-source $VIMRUNTIME/mswin.vim
-behave mswin
 
 " disable swap file warning
-set shortmess+=A
+set shortmess:A
