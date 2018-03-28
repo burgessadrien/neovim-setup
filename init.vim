@@ -3,8 +3,7 @@
      silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
      autocmd VimEnter * PlugInstall
-   endif
-
+ endif
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
@@ -19,17 +18,21 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'liuchengxu/space-vim-dark'
 
 " Syntax.
-Plug 'vim-syntastic/syntastic'
 Plug 'Raimondi/delimitMate'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'tpope/vim-surround'
-Plug 'neomake/neomake'
 Plug 'jiangmiao/auto-pairs'
 Plug 'w0rp/ale'
 
 " Functional.
+Plug 'rkulla/pydiction'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'easymotion/vim-easymotion'
+Plug 'sunaku/vim-shortcut'
 Plug 'roxma/nvim-completion-manager'
 Plug 'Shougo/denite.nvim'
+Plug 'airblade/vim-gitgutter'
+Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-sensible'
 Plug 'brooth/far.vim'
@@ -45,6 +48,7 @@ Plug 'noahfrederick/vim-laravel'
 Plug 'noahfrederick/vim-composer'
 Plug 'jwalton512/vim-blade'
 Plug 'mileszs/ack.vim'
+Plug 'nathanaelkane/vim-indent-guides'
 
 
 " Auto-completion.
@@ -75,11 +79,7 @@ call plug#end()
 
 hi Comment cterm=italic
 set background=dark
-let g:lightline = {
-  \ 'colorscheme': 'onedark',
-  \ }
-let g:airline_theme='onedark'
-colorscheme onedark
+colorscheme gruvbox
 
 " NERDTree
 let NERDTreeShowHidden=1
@@ -94,12 +94,19 @@ let g:ctrlp_cmd = 'CtrlP'
 set wildignore+=*/vendor/**
 set wildignore+=*/public/forum/**
 
+" indent guide.
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
+
 " editorconfig.
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
+" indent guide.
+let g:indent_guides_enable_on_vim_startup = 1
 
 " Undotree.
-nmap <C-A-z> :UndotreeShow<cr>
+nmap <C-A-z> :UndotreeToggle<cr>
 " Move to vimrc faster.
 map <leader> :ev $MYVIMRC <leader>
 
@@ -132,10 +139,15 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 autocmd vimenter * NERDTree
 
 " Keyboard shortcuts.
-" Copy, paste, cut
-map <A-c>"+y"<cr>
-" Save
+" Change leader key
+let mapleader = "1"
+
+" Set write shortcut.
 map <C-s> :w <cr>
+" Resetting keyboard shortcuts for cut/copy/paste to ctrl x/c/v  -  use q for
+" visual mode instead of v
+source $VIMRUNTIME/mswin.vim
+behave mswin
 "Make it easy to edit VIMRC file"
 nmap <Leader>ev :tabedit $MYVIMRC<cr>
 
