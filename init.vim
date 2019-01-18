@@ -1,156 +1,135 @@
 " Install Vim Plug if not installed
    if empty(glob('~/.config/nvim/autoload/plug.vim'))
-     silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-       \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-     autocmd VimEnter * PlugInstall
+        silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        autocmd VimEnter * PlugInstall
  endif
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
-" Aesthetics.
-Plug 'flazz/vim-colorschemes'
-Plug 'joshdick/onedark.vim'
-Plug 'rafi/awesome-vim-colorschemes'
-Plug 'sonph/onehalf'
-Plug 'dikiaap/minimalist'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'liuchengxu/space-vim-dark'
+" Non-editing plugins
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'mbbill/undotree'
+Plug 'henrik/vim-indexed-search'
 
-" Syntax.
-Plug 'Raimondi/delimitMate'
-Plug 'bronson/vim-trailing-whitespace'
-Plug 'tpope/vim-surround'
-Plug 'jiangmiao/auto-pairs'
+" File manipulation
+Plug 'tpope/vim-eunuch'
+
+" Git
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" Error detection
 Plug 'w0rp/ale'
 
-" Functional.
-Plug 'rkulla/pydiction'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'easymotion/vim-easymotion'
-Plug 'sunaku/vim-shortcut'
-Plug 'roxma/nvim-completion-manager'
-Plug 'Shougo/denite.nvim'
-Plug 'airblade/vim-gitgutter'
-Plug 'ryanoasis/vim-devicons'
-Plug 'scrooloose/nerdcommenter'
-Plug 'tpope/vim-sensible'
-Plug 'brooth/far.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-fugitive'
-Plug 'pangloss/vim-javascript'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'mbbill/undotree'
-Plug 'kien/ctrlp.vim'
-Plug 'honza/vim-snippets'
-Plug 'noahfrederick/vim-laravel'
-Plug 'noahfrederick/vim-composer'
-Plug 'jwalton512/vim-blade'
-Plug 'mileszs/ack.vim'
+" Editor Features
+Plug 'terryma/vim-multiple-cursors'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'junegunn/vim-easy-align'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'ap/vim-css-color'
 
-
-" Auto-completion.
+" Completion
+Plug 'mattn/emmet-vim'
+Plug 'raimondi/delimitmate'
 Plug 'zchee/deoplete-jedi'
-
 if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+	Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+	Plug 'Shougo/deoplete.nvim'
+	Plug 'roxma/nvim-yarp'
+	Plug 'roxma/vim-hug-neovim-rpc'
 endif
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
-let g:ackprg = 'ag --nogroup --nocolor --column'
-let g:deoplete#enable_at_startup = 1
-" Movement.
+" Syntax highlighting
+Plug 'hdima/python-syntax'
 
+" Aesthetics
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'morhetz/gruvbox'
+Plug 'ryanoasis/vim-devicons'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
-" Color Scheme
-" minimalist
-"set t_Co=256
-"syntax on
-"colorscheme minimalist
+" Clipboard Settings
+set clipboard=unnamedplus
+" Copy to system clipboard
+vnoremap <leader>y  "y
+vnoremap <leader>yy "yy
+" Cut to system clipboard
+vnoremap <leader>v "v
+" Paste from system clipboard
+vnoremap <leader>p "p
 
-hi Comment cterm=italic
-set background=dark
+
+" Aesthetics
+set encoding=utf8
 colorscheme gruvbox
+set background=dark
 
-" NERDTree
-let NERDTreeShowHidden=1
-let g:NERDTreeDirArrowExpandable = '↠'
-let g:NERDTreeDirArrowCollapsible = '↡'
-nmap <C-b> :NERDTreeToggle<cr>
-
-" CtrlP file search"
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-" I don't want to pull up these folders/files when calling CtrlP
-set wildignore+=*/vendor/**
-set wildignore+=*/public/forum/**
-
-" indent guide.
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_guide_size = 1
-let g:indent_guides_start_level = 2
-
-" editorconfig.
-let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-
-" indent guide.
-let g:indent_guides_enable_on_vim_startup = 1
-
-" Undotree.
-nmap <C-A-z> :UndotreeToggle<cr>
-" Move to vimrc faster.
-map <leader> :ev $MYVIMRC <leader>
-
-" Movement.
-"
-" Mouse Support.
-set mouse=a
-
-" show existing tab with 4 spaces width
+" Settings for tabs
 set tabstop=4
-" when indenting with '>', use 4 spaces width
 set shiftwidth=4
-" On pressing tab, insert 4 spaces
 set expandtab
 set number
 
-
-
-"easier window navigation
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-map <leader>= :vertical resize +5<CR>
-map <leader>- :vertical resize -5<CR>
-
-
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-autocmd vimenter * NERDTree
-
-" Keyboard shortcuts.
-" Change leader key
+" Keyboard Shortcuts
+" Leader shortcuts
 let mapleader = "1"
-
-" Set write shortcut.
-map <C-s> :w <cr>
-" Resetting keyboard shortcuts for cut/copy/paste to ctrl x/c/v  -  use q for
-" visual mode instead of v
-source $VIMRUNTIME/mswin.vim
-behave mswin
-"Make it easy to edit VIMRC file"
+map <leader> :ev $MYVIMRC <leader>
 nmap <Leader>ev :tabedit $MYVIMRC<cr>
+
+" Shortcuts for system clipboard
+" Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
+
+" Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
 
 
 " disable swap file warning
 set shortmess:A
+
+" Airline settings
+let g:airline_theme='badwolf'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '◀'
+let g:airline#extensions#ale#enabled=1
+
+" Movement
+set mouse=a
+
+" Nerdtree settings
+map <C-b> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:NERDTreeDirArrowExpandable = '⇁'
+let g:NERDTreeDirArrowCollapsible = '↴'
+
+" FZF settings
+map <C-p> :Files<CR>
+
+" Ale settings
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '>'
+
+" Deoplete settings
+let g:deoplete#enable_at_startup = 1
+
+" Vim indent guides settings
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 1
+let g:indent_guides_enable_on_vim_startup = 1
+
+" GitGutter settings
+map <C-g> :GitGutterToggle<CR>
